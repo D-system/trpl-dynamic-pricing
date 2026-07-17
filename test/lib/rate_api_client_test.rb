@@ -5,7 +5,8 @@ require "test_helper"
 #
 # See Api::V1::PricingService for the business logic.
 class RateApiClientTest < ActiveSupport::TestCase
-  common_request_attributes = [
+  PRICING_URL = "#{RateApiClient.base_uri}/pricing".freeze
+  COMMON_REQUEST_ATTRIBUTES = [
     { period: "Summer", hotel: "FloatingPointResort", room: "SingletonRoom" },
   ].freeze
 
@@ -21,8 +22,8 @@ class RateApiClientTest < ActiveSupport::TestCase
       ]
     }
 
-    stub_request(:post, "http://localhost:8080/pricing").
-      with(body: { attributes: common_request_attributes }.to_json).
+    stub_request(:post, PRICING_URL).
+      with(body: { attributes: COMMON_REQUEST_ATTRIBUTES }.to_json).
       to_return(
         status: 200,
         headers: { "content-type": ["application/json"] },
@@ -51,8 +52,8 @@ class RateApiClientTest < ActiveSupport::TestCase
       ]
     }
 
-    stub_request(:post, "http://localhost:8080/pricing").
-      with(body: { attributes: common_request_attributes }.to_json).
+    stub_request(:post, PRICING_URL).
+      with(body: { attributes: COMMON_REQUEST_ATTRIBUTES }.to_json).
       to_return(
         status: 200,
         headers: { "content-type": ["application/json"] },
@@ -77,8 +78,8 @@ class RateApiClientTest < ActiveSupport::TestCase
       status: "error",
     }
 
-    stub_request(:post, "http://localhost:8080/pricing").
-      with(body: { attributes: common_request_attributes }.to_json).
+    stub_request(:post, PRICING_URL).
+      with(body: { attributes: COMMON_REQUEST_ATTRIBUTES }.to_json).
       to_return(
         status: 500,
         headers: { "content-type": ["application/json"] },
