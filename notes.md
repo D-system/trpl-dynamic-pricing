@@ -17,7 +17,7 @@
 - [] Api::V1::PricingService: Add a cache
 
 ### Other changes (nice to have):
-- [] Update Docker commands in the README
+- [x] Update Docker commands in the README
 - [] Update (non-Rails) Gems
 - [] Update Rails to latest in 7.x
 - [] Update Ruby

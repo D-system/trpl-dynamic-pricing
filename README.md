@@ -61,7 +61,7 @@ Here is a list of common commands for building, running, and interacting with th
 
 # --- 1. Build & Run The Main Application ---
 # Build and run the Docker compose
-docker compose up -d --build
+docker-compose up -d --build
 
 # --- 2. Test The Endpoint ---
 # Send a sample request to your running service
@@ -69,13 +69,13 @@ curl 'http://localhost:3000/api/v1/pricing?period=Summer&hotel=FloatingPointReso
 
 # --- 3. Run Tests ---
 # Run the full test suite
-docker compose exec interview-dev ./bin/rails test
+docker-compose exec interview-dev ./bin/rails test
 
 # Run a specific test file
-docker compose exec interview-dev ./bin/rails test test/controllers/pricing_controller_test.rb
+docker-compose exec interview-dev ./bin/rails test test/controllers/pricing_controller_test.rb
 
 # Run a specific test by name
-docker compose exec interview-dev ./bin/rails test test/controllers/pricing_controller_test.rb -n test_should_get_pricing_with_all_parameters
+docker-compose exec interview-dev ./bin/rails test test/controllers/pricing_controller_test.rb -n test_should_get_pricing_with_all_parameters
 ```
 
 
