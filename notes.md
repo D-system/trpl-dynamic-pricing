@@ -8,6 +8,9 @@
 - After installing the Docker and Colima, I tested with the rate-api server. It failed at first run and requests were successful after that.
 - The services have a BaseService class to have the same common behavior. Nice.
 
+## Later observations
+- The code coverage is at 96.15%. It is missing the method that do the actual HTTP request. It would be nice to have that method tested too as any change to the method or the gem could break the code without noticing it due to lack of testing.
+
 
 ## Plan:
 
@@ -18,6 +21,8 @@
 
 ### Other changes (nice to have):
 - [x] Update Docker commands in the README
+- [x] Add code coverage metrics
+- [] Add test for RateApiClient#get_rate
 - [] Update (non-Rails) Gems
 - [] Update Rails to latest in 7.x
 - [] Update Ruby
