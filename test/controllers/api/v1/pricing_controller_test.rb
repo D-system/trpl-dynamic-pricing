@@ -20,8 +20,7 @@ class Api::V1::PricingControllerTest < ActionDispatch::IntegrationTest
       assert_response :success
       assert_equal "application/json", @response.media_type
 
-      json_response = JSON.parse(@response.body)
-      assert_equal "15000", json_response["rate"]
+      assert_equal "15000", @response.parsed_body["rate"]
     end
   end
 
@@ -38,8 +37,7 @@ class Api::V1::PricingControllerTest < ActionDispatch::IntegrationTest
       assert_response :bad_request
       assert_equal "application/json", @response.media_type
 
-      json_response = JSON.parse(@response.body)
-      assert_includes json_response["error"], "Rate not found"
+      assert_includes @response.parsed_body["error"], "Rate not found"
     end
   end
 
@@ -49,8 +47,7 @@ class Api::V1::PricingControllerTest < ActionDispatch::IntegrationTest
     assert_response :bad_request
     assert_equal "application/json", @response.media_type
 
-    json_response = JSON.parse(@response.body)
-    assert_includes json_response["error"], "Missing required parameters"
+    assert_includes @response.parsed_body["error"], "Missing required parameters"
   end
 
   test "should handle empty parameters" do
@@ -63,8 +60,7 @@ class Api::V1::PricingControllerTest < ActionDispatch::IntegrationTest
     assert_response :bad_request
     assert_equal "application/json", @response.media_type
 
-    json_response = JSON.parse(@response.body)
-    assert_includes json_response["error"], "Missing required parameters"
+    assert_includes @response.parsed_body["error"], "Missing required parameters"
   end
 
   test "should reject invalid period" do
@@ -77,8 +73,7 @@ class Api::V1::PricingControllerTest < ActionDispatch::IntegrationTest
     assert_response :bad_request
     assert_equal "application/json", @response.media_type
 
-    json_response = JSON.parse(@response.body)
-    assert_includes json_response["error"], "Invalid period"
+    assert_includes @response.parsed_body["error"], "Invalid period"
   end
 
   test "should reject invalid hotel" do
@@ -91,8 +86,7 @@ class Api::V1::PricingControllerTest < ActionDispatch::IntegrationTest
     assert_response :bad_request
     assert_equal "application/json", @response.media_type
 
-    json_response = JSON.parse(@response.body)
-    assert_includes json_response["error"], "Invalid hotel"
+    assert_includes @response.parsed_body["error"], "Invalid hotel"
   end
 
   test "should reject invalid room" do
@@ -105,7 +99,6 @@ class Api::V1::PricingControllerTest < ActionDispatch::IntegrationTest
     assert_response :bad_request
     assert_equal "application/json", @response.media_type
 
-    json_response = JSON.parse(@response.body)
-    assert_includes json_response["error"], "Invalid room"
+    assert_includes @response.parsed_body["error"], "Invalid room"
   end
 end
