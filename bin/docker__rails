@@ -1,0 +1,3 @@
+#!/bin/bash -e
+
+docker-compose exec interview-dev bin/rails "$@"
