@@ -29,3 +29,5 @@
 
 en:
   hello: "Hello world"
+  rate_api:
+    unknown_error: "An unknown error occured. Our team is looking into."

@@ -109,6 +109,24 @@ class Api::V1::PricingServiceTest < ActiveSupport::TestCase
     assert_nil(pricing.result)
   end
 
+  test "the API returns an error without expected errors attibutes and fallback" do
+    response_body = {}
+
+    stub_request(:post, PRICING_URL).
+      with(body: { attributes: [COMMON_REQUEST_ATTRIBUTES] }.to_json).
+      to_return(
+        status: 500,
+        headers: { "content-type": ["application/json"] },
+        body: response_body.to_json,
+      )
+
+    pricing = Api::V1::PricingService.new(**COMMON_REQUEST_ATTRIBUTES)
+    pricing.run
+    assert_nil(pricing.result)
+    assert_equal(pricing.errors.length, 1)
+    assert_equal(pricing.errors[0], I18n.t("rate_api.unknown_error"))
+  end
+
   test "call to API and return an error (sample from rate-api response)" do
     response_body = {
       message: "Failed to process rates due to an intermittent issue.",
