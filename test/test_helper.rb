@@ -7,8 +7,7 @@ require "simplecov"
 SimpleCov.start do
   enable_coverage :branch
   primary_coverage :branch
-  # TODO: update to `branch: 100` when more tests added
-  minimum_coverage line: 100, branch: 92.85
+  minimum_coverage line: 100, branch: 100
 end
 
 require "webmock/minitest"

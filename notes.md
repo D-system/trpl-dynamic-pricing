@@ -21,16 +21,22 @@
 
 ### Mandatory changes:
 - [x] Block any HTTP calls in test
+- [x] `rate-api`' sample data and existing code mismatch: cover either case
 - [] Api::V1::PricingService: Add test to conver successful request to the rate-api but with unexpected object
 - [] Api::V1::PricingService: validate object
 - [] Api::V1::PricingService: Add a cache
+
+### Essential
+- [x] Add test for RateApiClient#get_rate
+- [x] Update test to have the proper `content-type` header and use the `parsed_body` in the application
+- [x] Update `Api::V1::PricingControllerTest` to have proper mocking set
+- [x] Handled gracefully when the `rates` attribute is missing
 
 ### Other changes (nice to have):
 - [x] Update Docker commands in the README
 - [x] Add code coverage metrics
 - [x] Make the test suite fail if below minimum coverage
-- [] Update minimum branch coverage to 100%
-- [] Add test for RateApiClient#get_rate
+- [x] Update minimum branch coverage to 100%
 - [] Update (non-Rails) Gems
 - [] Update Rails to latest in 7.x
 - [] Update Ruby
