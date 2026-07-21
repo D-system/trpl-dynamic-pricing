@@ -1,64 +1,42 @@
 require "test_helper"
 
 class Api::V1::PricingControllerTest < ActionDispatch::IntegrationTest
-  # TODO: mock the `Api::V1::PricingService`
-  PRICING_URL = "#{RateApiClient.base_uri}/pricing".freeze
-    COMMON_REQUEST_ATTRIBUTES = {
-    period: "Summer",
-    hotel: "FloatingPointResort",
-    room: "SingletonRoom"
-  }.freeze
-
   test "should get pricing with all parameters" do
-    response_body = {
-      'rates' => [
-        { 'period' => 'Summer', 'hotel' => 'FloatingPointResort', 'room' => 'SingletonRoom', 'rate' => 15_000 }
-      ]
-    }
+    mock_service = Api::V1::PricingService.new(period: nil, hotel: nil, room: nil)
+    mock_service.result = 15_000
+    def mock_service.run = nil
 
-    stub_request(:post, PRICING_URL).
-      with(body: { attributes: [COMMON_REQUEST_ATTRIBUTES] }.to_json).
-      to_return(
-        status: 200,
-        headers: { "content-type": ["application/json"] },
-        body: response_body.to_json,
-      )
+    Api::V1::PricingService.stub(:new, mock_service) do
+      get api_v1_pricing_url, params: {
+        period: "Summer",
+        hotel: "FloatingPointResort",
+        room: "SingletonRoom"
+      }
 
-    get api_v1_pricing_url, params: {
-      period: "Summer",
-      hotel: "FloatingPointResort",
-      room: "SingletonRoom"
-    }
+      assert_response :success
+      assert_equal "application/json", @response.media_type
 
-    assert_response :success
-    assert_equal "application/json", @response.media_type
-
-    assert_equal 15_000, @response.parsed_body["rate"]
+      assert_equal 15_000, @response.parsed_body["rate"]
+    end
   end
 
   test "should return error when rate API fails" do
-    response_body = {
-      error: 'Rate not found'
-    }
+    mock_service = Api::V1::PricingService.new(period: nil, hotel: nil, room: nil)
+    mock_service.errors << "Rate not found"
+    def mock_service.run = nil
 
-    stub_request(:post, PRICING_URL).
-      with(body: { attributes: [COMMON_REQUEST_ATTRIBUTES] }.to_json).
-      to_return(
-        status: 500,
-        headers: { "content-type": ["application/json"] },
-        body: response_body.to_json,
-      )
+    Api::V1::PricingService.stub(:new, mock_service) do
+      get api_v1_pricing_url, params: {
+        period: "Summer",
+        hotel: "FloatingPointResort",
+        room: "SingletonRoom"
+      }
 
-    get api_v1_pricing_url, params: {
-      period: "Summer",
-      hotel: "FloatingPointResort",
-      room: "SingletonRoom"
-    }
+      assert_response :bad_request
+      assert_equal "application/json", @response.media_type
 
-    assert_response :bad_request
-    assert_equal "application/json", @response.media_type
-
-    assert_includes @response.parsed_body["error"], "Rate not found"
+      assert_includes @response.parsed_body["error"], "Rate not found"
+    end
   end
 
   test "should return error without any parameters" do
