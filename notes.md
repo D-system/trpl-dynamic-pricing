@@ -23,7 +23,7 @@
 ### Mandatory changes:
 - [x] Block any HTTP calls in test
 - [x] `rate-api`' sample data and existing code mismatch: cover either case
-- [] Api::V1::PricingService: Add a cache
+- [] Api::V1::PricingService: Add a cache (disabled in development mode by default)
 
 ### Essential changes:
 - [x] Add test for RateApiClient#get_rate
