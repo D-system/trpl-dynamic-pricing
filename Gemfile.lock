@@ -133,6 +133,7 @@ GEM
     marcel (1.0.4)
     mini_mime (1.1.5)
     minitest (5.25.5)
+    minitest-mock (5.27.0)
     msgpack (1.8.0)
     multi_xml (0.8.1)
       bigdecimal (>= 3.1, < 5)
@@ -244,6 +245,8 @@ DEPENDENCIES
   debug
   httparty
   listen (~> 3.3)
+  minitest
+  minitest-mock
   puma (>= 5.0)
   rails (~> 7.1.5, >= 7.1.5.2)
   simplecov
