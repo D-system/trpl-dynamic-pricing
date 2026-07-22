@@ -7,9 +7,15 @@ class Api::V1::PricingService < BaseService
 
   def run
     # TODO: Start to implement here
+    @result = fetch_value
+  end
+
+  private
+
+  def fetch_value
     rate = RateApiClient.get_rate(period: @period, hotel: @hotel, room: @room)
     if rate.success?
-      @result = if rate.parsed_response.include?('rates')
+      if rate.parsed_response.include?('rates')
         rate.parsed_response['rates'].detect { |r| r['period'] == @period && r['hotel'] == @hotel && r['room'] == @room }&.dig('rate')
       else
         nil
@@ -25,6 +31,7 @@ class Api::V1::PricingService < BaseService
       end
 
       errors << error_message
+      nil # error path: no value returned
     end
   end
 end
