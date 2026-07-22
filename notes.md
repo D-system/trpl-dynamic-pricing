@@ -8,13 +8,14 @@
 - After installing the Docker and Colima, I tested with the rate-api server. It failed at first run and requests were successful after that.
 - The services have a BaseService class to have the same common behavior. Nice.
 
-## Later observations
+## Later observations:
 - The code coverage is at 96.15%. It is missing the method that do the actual HTTP request. It would be nice to have that method tested too as any change to the method or the gem could break the code without noticing it due to lack of testing.
 - I was implementing the test for the RateApiClient when I realised that the JSON parsing is performed in the Api::V1::PricingService. It would be better to test the there because there is logic. RateApiClient is sort of alias for HTTParty.
 - I realised that the JSON parsing is done twice. Once manually with `JSON.parse` and another one done automatically from HTTParty when the content-type header is set properly
 - The test for the `Api::V1::PricingControllerTest` is testing somewhat too deep or the not deep enough.
 - - It uses the `Api::V1::PricingService` that internally call `RateApiClient` that is stubbed in the controller test. It doesn't provide the expected object (on HTTParty object) that implement all methods available. Either it should intercept and mock the HTTP or stub `Api::V1::PricingService` with the `result` set.
 - - The `Api::V1::PricingControllerTest`'s `mock_body`'s rate doesn't have the right type (string vs integer/number).
+- Before to start implementing the code needed to be changed to avoid crashes, different object structure between the app and the rate-api, test suite missing converage and missing lower level testing for the service. It might looks like a detour but it is not. Crashes would happen in some cases and the tests were less maintainable.
 
 
 ## Plan:
@@ -22,17 +23,16 @@
 ### Mandatory changes:
 - [x] Block any HTTP calls in test
 - [x] `rate-api`' sample data and existing code mismatch: cover either case
-- [] Api::V1::PricingService: Add test to conver successful request to the rate-api but with unexpected object
-- [] Api::V1::PricingService: validate object
 - [] Api::V1::PricingService: Add a cache
 
-### Essential
+### Essential changes:
 - [x] Add test for RateApiClient#get_rate
 - [x] Update test to have the proper `content-type` header and use the `parsed_body` in the application
 - [x] Update `Api::V1::PricingControllerTest` to have proper mocking set
 - [x] Handled gracefully when the `rates` attribute is missing
+- [x] Api::V1::PricingService: Add test to conver successful request to the rate-api but with unexpected object (the app can crash otherwise)
 
-### Other changes (nice to have):
+### Nice to have changes:
 - [x] Update Docker commands in the README
 - [x] Add code coverage metrics
 - [x] Make the test suite fail if below minimum coverage
@@ -43,3 +43,4 @@
 - [] Update Rails to latest (8.x)
 - [] Have proper translations for the error messages
 - [] Validate all Api::V1::PricingService parameters at once
+- [] Api::V1::PricingService: validate object from the API and map it to own strucuture
