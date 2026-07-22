@@ -40,7 +40,7 @@
 - [x] Update (non-Rails) Gems
 - [x] Update Rails to latest in 7.x
 - [] Update Ruby
-- [] Update Rails to latest (8.x)
+- [x] Update Rails to latest (8.x)
 - [] Have proper translations for the error messages
 - [] Validate all Api::V1::PricingService parameters at once
 - [] Api::V1::PricingService: validate object from the API and map it to own strucuture

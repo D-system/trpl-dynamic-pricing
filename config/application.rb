@@ -40,8 +40,5 @@ module Interview
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
-
-    # Rails 8.1 new default behavior
-    config.active_support.to_time_preserves_timezone = :zone
   end
 end
