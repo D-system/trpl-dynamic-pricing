@@ -37,8 +37,8 @@
 - [x] Add code coverage metrics
 - [x] Make the test suite fail if below minimum coverage
 - [x] Update minimum branch coverage to 100%
-- [] Update (non-Rails) Gems
-- [] Update Rails to latest in 7.x
+- [x] Update (non-Rails) Gems
+- [x] Update Rails to latest in 7.x
 - [] Update Ruby
 - [] Update Rails to latest (8.x)
 - [] Have proper translations for the error messages
