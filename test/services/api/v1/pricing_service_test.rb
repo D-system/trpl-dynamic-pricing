@@ -1,9 +1,5 @@
 require "test_helper"
 
-# The test class is here to get a sense of the return values of the rate-api.
-# It is not exhaustive nor cover much business logic.
-#
-# See Api::V1::PricingService for the business logic.
 class Api::V1::PricingServiceTest < ActiveSupport::TestCase
   PRICING_URL = "#{RateApiClient.base_uri}/pricing".freeze
   COMMON_REQUEST_ATTRIBUTES = {
@@ -32,10 +28,11 @@ class Api::V1::PricingServiceTest < ActiveSupport::TestCase
         body: response_body.to_json,
       )
 
-    service = Api::V1::PricingService.new(**COMMON_REQUEST_ATTRIBUTES)
-    assert_equal(service.valid?, true)
-    result = service.run
-    assert_equal(result, 49_000)
+    pricing = Api::V1::PricingService.new(**COMMON_REQUEST_ATTRIBUTES)
+    pricing.run
+
+    assert_equal(pricing.valid?, true)
+    assert_equal(pricing.result, 49_000)
   end
 
   test "call to API with the return field 'rate' missing" do
@@ -57,15 +54,12 @@ class Api::V1::PricingServiceTest < ActiveSupport::TestCase
         body: response_body.to_json,
       )
 
-    result = RateApiClient.get_rate(**COMMON_REQUEST_ATTRIBUTES)
-    assert_equal(result.success?, true)
-    assert_equal(result.parsed_response["rates"].length, 1)
+    pricing = Api::V1::PricingService.new(**COMMON_REQUEST_ATTRIBUTES)
+    pricing.run
 
-    api_value = result.parsed_response["rates"][0]
-    assert_equal(api_value["hotel"], "FloatingPointResort")
-    assert_equal(api_value["period"], "Summer")
-    assert_equal(api_value.key?("rate"), false) # Key missing
-    assert_equal(api_value["room"], "SingletonRoom")
+    assert_equal(pricing.valid?, true)
+    assert_nil(pricing.result)
+    assert_equal(pricing.errors, [])
   end
 
   test "call to API with the return field 'hotel' missing" do
@@ -89,6 +83,7 @@ class Api::V1::PricingServiceTest < ActiveSupport::TestCase
 
     pricing = Api::V1::PricingService.new(**COMMON_REQUEST_ATTRIBUTES)
     pricing.run
+
     assert_equal(pricing.valid?, true)
     assert_nil(pricing.result)
   end
@@ -106,6 +101,7 @@ class Api::V1::PricingServiceTest < ActiveSupport::TestCase
 
     pricing = Api::V1::PricingService.new(**COMMON_REQUEST_ATTRIBUTES)
     pricing.run
+
     assert_nil(pricing.result)
   end
 
@@ -122,9 +118,9 @@ class Api::V1::PricingServiceTest < ActiveSupport::TestCase
 
     pricing = Api::V1::PricingService.new(**COMMON_REQUEST_ATTRIBUTES)
     pricing.run
+
     assert_nil(pricing.result)
-    assert_equal(pricing.errors.length, 1)
-    assert_equal(pricing.errors[0], I18n.t("rate_api.unknown_error"))
+    assert_equal(pricing.errors, [I18n.t("rate_api.unknown_error")])
   end
 
   test "call to API and return an error (sample from rate-api response)" do
@@ -143,8 +139,8 @@ class Api::V1::PricingServiceTest < ActiveSupport::TestCase
 
     pricing = Api::V1::PricingService.new(**COMMON_REQUEST_ATTRIBUTES)
     pricing.run
-    assert_equal(pricing.valid?, false)
 
+    assert_equal(pricing.valid?, false)
     assert_equal(pricing.errors, ["Failed to process rates due to an intermittent issue."],)
   end
 
@@ -164,8 +160,8 @@ class Api::V1::PricingServiceTest < ActiveSupport::TestCase
 
     pricing = Api::V1::PricingService.new(**COMMON_REQUEST_ATTRIBUTES)
     pricing.run
-    assert_equal(pricing.valid?, false)
 
+    assert_equal(pricing.valid?, false)
     assert_equal(pricing.errors, ["Failed to process rates due to an intermittent issue."],)
   end
 end
