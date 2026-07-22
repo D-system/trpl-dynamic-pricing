@@ -39,7 +39,7 @@
 - [x] Update minimum branch coverage to 100%
 - [x] Update (non-Rails) Gems
 - [x] Update Rails to latest in 7.x
-- [] Update Ruby
+- [x] Update Ruby
 - [x] Update Rails to latest (8.x)
 - [] Have proper translations for the error messages
 - [] Validate all Api::V1::PricingService parameters at once
