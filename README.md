@@ -1,3 +1,45 @@
+## How to install
+
+### Docker
+
+Prerequirement: Docker install (see official Docker documentation).
+
+Build the Docker images and start the application:
+```sh
+./bin/docker__apps_start
+```
+
+The application is accessible on `http://localhost:3000`.
+
+Sample command:
+```sh
+curl "http://localhost:3000/api/v1/pricing?period=Summer&hotel=FloatingPointResort&room=SingletonRoom"
+```
+
+To run the test:
+
+```sh
+./bin/docker__rails test
+```
+
+To stop the application and the running Docker images:
+
+```sh
+./bin/docker__apps_stop
+```
+
+
+## Cache design decision
+For the cache, I choose to use the Rails cache system that can use many adaptators.
+The adaptator chosen uses the SQL database (in a separated database from the rest of the data (even no data exists presently)).
+The current database adaptator is SQlite has not changed.
+It can scale well beyond the scaling requirement. It limits to a single server intance.
+In the case multiple servers are required, the SQL database adaptor can change to MySQL or Postgres. Also the cache adaptor can be change too (eg: Redis).
+The change of the database adaptor or cache adaptor will empty the cache (if not migrated). With a 5 minutes cache, having an empty cache is probably acceptatble.
+
+
+
+
 ## Initial assessment:
 - The repository uses an old version of Ruby. It could be updated to 4.0.6 without any issues (probably).
 - Rails too is old. At the commit time, Rails 8.0 was release 10 months prior. Probably a copy/paste from an old project. It would be valuable to update it to at least Rails 7.2.
