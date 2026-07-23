@@ -55,8 +55,8 @@ The change of the database adaptor or cache adaptor will empty the cache (if not
 - I was implementing the test for the RateApiClient when I realised that the JSON parsing is performed in the Api::V1::PricingService. It would be better to test the there because there is logic. RateApiClient is sort of alias for HTTParty.
 - I realised that the JSON parsing is done twice. Once manually with `JSON.parse` and another one done automatically from HTTParty when the content-type header is set properly
 - The test for the `Api::V1::PricingControllerTest` is testing somewhat too deep or the not deep enough.
-- - It uses the `Api::V1::PricingService` that internally call `RateApiClient` that is stubbed in the controller test. It doesn't provide the expected object (on HTTParty object) that implement all methods available. Either it should intercept and mock the HTTP or stub `Api::V1::PricingService` with the `result` set.
-- - The `Api::V1::PricingControllerTest`'s `mock_body`'s rate doesn't have the right type (string vs integer/number).
+  - It uses the `Api::V1::PricingService` that internally call `RateApiClient` that is stubbed in the controller test. It doesn't provide the expected object (on HTTParty object) that implement all methods available. Either it should intercept and mock the HTTP or stub `Api::V1::PricingService` with the `result` set.
+  - The `Api::V1::PricingControllerTest`'s `mock_body`'s rate doesn't have the right type (string vs integer/number).
 - Before to start implementing the code needed to be changed to avoid crashes, different object structure between the app and the rate-api, test suite missing converage and missing lower level testing for the service. It might looks like a detour but it is not. Crashes would happen in some cases and the tests were less maintainable.
 
 
@@ -85,6 +85,6 @@ The change of the database adaptor or cache adaptor will empty the cache (if not
 - [x] Update Ruby
 - [x] Update Rails to latest (8.x)
 - [x] Simple load test for Api::V1::PricingService
-- [] Have proper translations for the error messages
-- [] Validate all Api::V1::PricingService parameters at once
-- [] Api::V1::PricingService: validate object from the API and map it to own strucuture
+- [ ] Have proper translations for the error messages
+- [ ] Validate all Api::V1::PricingService parameters at once
+- [ ] Api::V1::PricingService: validate object from the API and map it to own strucuture
