@@ -6,8 +6,22 @@ class Api::V1::PricingService < BaseService
   end
 
   def run
-    # TODO: Start to implement here
-    @result = fetch_value
+    @result = Rails.cache.fetch(
+      "#{@period}:#{@hotel}:#{@room}",
+      skip_nil: true,
+      expires_in: 295.seconds, # invalidate cache after 4 minutes and 55 seconds
+      race_condition_ttl: 5.seconds, # allow to use "invalide" cache for 5 seconds (allowing to use the key for 5 minutes total)
+    ) do
+      fetch_value
+    end
+
+    nil # Ensure the `@result` is not return. It should access via `.result` on the instance.
+
+  rescue => e
+    # Add Sentry/Datadog/... or error logs should be parsed and trigger an alert
+    Rails.logger.error("Api::V1::PricingService crashed: period: '#{@period}' hotel: '#{@hotel}' room: '#{@room}' message: '#{e.full_message}'")
+    errors << I18n.t("rate_api.technical_difficulties")
+    nil # error path: no value returned
   end
 
   private
