@@ -175,4 +175,16 @@ class Api::V1::PricingServiceTest < ActiveSupport::TestCase
     assert_equal(service.errors, [I18n.t("rate_api.technical_difficulties")])
     assert_nil(service.result)
   end
+
+  test "fetch_value raise an Errno::ECONNREFUSED exception" do
+    service = Api::V1::PricingService.new(**COMMON_REQUEST_ATTRIBUTES)
+    # Note: It's `TCPSocket.initialize` that raise the exception but WebHook already have a hook on it and stub the init method is to avoid.
+    service.stub(:fetch_value, -> { raise Errno::ECONNREFUSED, "rate-api down: can not connect" }) do
+      service.run
+    end
+
+    assert_equal(service.valid?, false)
+    assert_equal(service.errors, [I18n.t("rate_api.service_down")])
+    assert_nil(service.result)
+  end
 end

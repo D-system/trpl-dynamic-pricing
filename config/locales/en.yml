@@ -32,3 +32,4 @@ en:
   rate_api:
     unknown_error: "An unknown error occured. Our team is looking into."
     technical_difficulties: "The application had technical difficulties. Our engineers has been notified."
+    service_down: "We could not get the latest price at the moment. Please try again later. Our engineers has been notified."
