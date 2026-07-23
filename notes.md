@@ -41,6 +41,7 @@
 - [x] Update Rails to latest in 7.x
 - [x] Update Ruby
 - [x] Update Rails to latest (8.x)
+- [x] Simple load test for Api::V1::PricingService
 - [] Have proper translations for the error messages
 - [] Validate all Api::V1::PricingService parameters at once
 - [] Api::V1::PricingService: validate object from the API and map it to own strucuture
