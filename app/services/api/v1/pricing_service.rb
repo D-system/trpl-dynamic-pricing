@@ -29,11 +29,9 @@ class Api::V1::PricingService < BaseService
   def fetch_value
     rate = RateApiClient.get_rate(period: @period, hotel: @hotel, room: @room)
     if rate.success?
-      if rate.parsed_response.include?('rates')
-        rate.parsed_response['rates'].detect { |r| r['period'] == @period && r['hotel'] == @hotel && r['room'] == @room }&.dig('rate')
-      else
-        nil
-      end
+      return unless rate.parsed_response.include?('rates')
+
+      rate.parsed_response['rates'].detect { |r| r['period'] == @period && r['hotel'] == @hotel && r['room'] == @room }&.dig('rate')
     else
       # The rate-api server returns `message` but our test suite rely on `error`.
       # TODO: verify if the `error` is still in use or not.
