@@ -36,7 +36,7 @@ The current database adaptator is SQlite has not changed.
 It can scale well beyond the scaling requirement. It limits to a single server intance.
 In the case multiple servers are required, the SQL database adaptor can change to MySQL or Postgres. Also the cache adaptor can be change too (eg: Redis).
 The change of the database adaptor or cache adaptor will empty the cache (if not migrated). With a 5 minutes cache, having an empty cache is probably acceptatble.
-
+The cache system being from Rails core and the database backed cache adaptor (`solid_cache`) also being from the Rails organization, the long term code and security maintenance should be assured.
 
 
 
