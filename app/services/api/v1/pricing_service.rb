@@ -22,6 +22,11 @@ class Api::V1::PricingService < BaseService
     Rails.logger.error("Api::V1::PricingService: the rate-api is probably down: period: '#{@period}' hotel: '#{@hotel}' room: '#{@room}' class: '#{e.exception.class}' message: '#{e.full_message}'")
     errors << I18n.t("rate_api.service_down")
     nil # error path: no value returned
+  rescue Net::OpenTimeout => e
+    # Add Sentry/Datadog/... or error logs should be parsed and trigger an alert
+    Rails.logger.error("Api::V1::PricingService: the rate-api timed out: period: '#{@period}' hotel: '#{@hotel}' room: '#{@room}' class: '#{e.exception.class}' message: '#{e.full_message}'")
+    errors << I18n.t("rate_api.service_timeout")
+    nil # error path: no value returned
   rescue => e
     # Add Sentry/Datadog/... or error logs should be parsed and trigger an alert
     Rails.logger.error("Api::V1::PricingService crashed: period: '#{@period}' hotel: '#{@hotel}' room: '#{@room}' class: '#{e.exception.class}' message: '#{e.full_message}'")

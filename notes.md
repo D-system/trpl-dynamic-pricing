@@ -31,6 +31,7 @@
 - [x] Update `Api::V1::PricingControllerTest` to have proper mocking set
 - [x] Handled gracefully when the `rates` attribute is missing
 - [x] Api::V1::PricingService: Add test to conver successful request to the rate-api but with unexpected object (the app can crash otherwise)
+- [x] Add default timeout on `RateApiClient`
 
 ### Nice to have changes:
 - [x] Update Docker commands in the README

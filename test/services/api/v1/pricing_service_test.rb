@@ -187,4 +187,22 @@ class Api::V1::PricingServiceTest < ActiveSupport::TestCase
     assert_equal(service.errors, [I18n.t("rate_api.service_down")])
     assert_nil(service.result)
   end
+
+  test "the API timing out" do
+    stub_request(:post, PRICING_URL).
+      with(body: { attributes: [COMMON_REQUEST_ATTRIBUTES] }.to_json).
+      to_timeout
+
+    pricing = Api::V1::PricingService.new(**COMMON_REQUEST_ATTRIBUTES)
+
+    original_timeout = RateApiClient.default_options[:timeout]
+    RateApiClient.default_timeout(1.second)
+
+    pricing.run
+
+    assert_equal(pricing.valid?, false)
+    assert_equal(pricing.errors, [I18n.t("rate_api.service_timeout")])
+  ensure
+    RateApiClient.default_timeout(original_timeout)
+  end
 end
